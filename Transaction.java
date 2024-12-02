@@ -1,7 +1,12 @@
 import java.text.SimpleDateFormat;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
 import java.util.Date;
 
 public class Transaction {
+	
 
     // Perform the borrowing of a book
     public boolean borrowBook(Book book, Member member) {
@@ -10,6 +15,8 @@ public class Transaction {
             
             member.borrowBook(book); 
             String transactionDetails = getCurrentDateTime() + " - Borrowing: " + member.getName() + " borrowed " + book.getTitle();
+            String Details= "Borrowed: " + book.getTitle() + " by: " + member.getName(); 
+            saveTransaction(Details);
             System.out.println(transactionDetails);
             return true;
         } else {
@@ -24,6 +31,8 @@ public class Transaction {
             member.returnBook(book);
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
+            String Details= "Returned: " + book.getTitle() + " by: " + member.getName(); 
+            saveTransaction(Details);
             System.out.println(transactionDetails);
         } else {
             System.out.println("This book was not borrowed by the member.");
@@ -35,6 +44,21 @@ public class Transaction {
     		instance = new Transaction();
     	}
     	return instance;
+    	
+    }
+    public void displayTransactionHistory() {
+    	
+    }
+    public void saveTransaction(String transactionDetails) {
+    	try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt"));
+			writer.write(transactionDetails);
+			writer.newLine();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     }
 
