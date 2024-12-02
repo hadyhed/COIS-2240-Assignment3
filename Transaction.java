@@ -7,6 +7,7 @@ public class Transaction {
     public boolean borrowBook(Book book, Member member) {
         if (book.isAvailable()) {
             book.borrowBook();
+            
             member.borrowBook(book); 
             String transactionDetails = getCurrentDateTime() + " - Borrowing: " + member.getName() + " borrowed " + book.getTitle();
             System.out.println(transactionDetails);
@@ -28,10 +29,19 @@ public class Transaction {
             System.out.println("This book was not borrowed by the member.");
         }
     }
+    private static Transaction instance;
+    public static Transaction getTransaction() {
+    	if (instance==null) {
+    		instance = new Transaction();
+    	}
+    	return instance;
+    	
+    }
 
     // Get the current date and time in a readable format
     private String getCurrentDateTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
     }
+    
 }
