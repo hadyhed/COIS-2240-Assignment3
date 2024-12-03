@@ -1,6 +1,8 @@
 import java.text.SimpleDateFormat;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.util.Date;
@@ -47,6 +49,24 @@ public class Transaction {
     	
     }
     public void displayTransactionHistory() {
+    	try {
+			BufferedReader reader= new BufferedReader(new FileReader("transactions.txt"));
+			String line;
+			boolean fileContent= false;
+			System.out.println("Transaction History:");
+			System.out.println("*******************"); 
+			while ((line= reader.readLine()) !=null) {
+				System.out.println(line);
+				fileContent=true;
+			if (fileContent == false) {
+				System.out.println("There are no transactions available!");
+			}
+			
+		} }catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 
     	
     }
     public void saveTransaction(String transactionDetails) {
