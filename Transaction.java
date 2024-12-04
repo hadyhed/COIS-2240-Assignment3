@@ -18,8 +18,8 @@ public class Transaction {
             member.borrowBook(book); 
             String transactionDetails = getCurrentDateTime() + " - Borrowing: " + member.getName() + " borrowed " + book.getTitle();
             String Details= "Borrowed: " + book.getTitle() + " by: " + member.getName(); 
-            saveTransaction(Details);
             System.out.println(transactionDetails);
+            saveTransaction(Details);
             return true;
         } else {
             System.out.println("The book is not available.");
@@ -34,8 +34,8 @@ public class Transaction {
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
             String Details= "Returned: " + book.getTitle() + " by: " + member.getName(); 
+           System.out.println(transactionDetails);
             saveTransaction(Details);
-            System.out.println(transactionDetails);
         } else {
             System.out.println("This book was not borrowed by the member.");
         }
@@ -48,40 +48,30 @@ public class Transaction {
     	return instance;
     	
     }
-    public void displayTransactionHistory() {
-    	try {
-			BufferedReader reader= new BufferedReader(new FileReader("transactions.txt"));
-			String line;
-			boolean fileContent= false;
-			System.out.println("Transaction History:");
-			System.out.println("*******************"); 
-			while ((line= reader.readLine()) !=null) {
-				System.out.println(line);
-				fileContent=true;
-			if (fileContent == false) {
-				System.out.println("There are no transactions available!");
-			}
-			
-		} }catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public String displayTransactionHistory() { 
+        try (BufferedReader reader = new BufferedReader(new FileReader("transactions.txt"))){
+            String line;
+            System.out.println("\nTransaction History");
+            System.out.println("===========================");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error Reading Transaction History: " + e.getMessage());
+        }
+        return null;
+    }
     	 
     	
-    }
+    
     public void saveTransaction(String transactionDetails) {
-    	try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt"));
-			writer.write(transactionDetails);
-			writer.newLine();
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
+        try(FileWriter writer = new FileWriter("transactions.txt", true)){
+            writer.write(transactionDetails + "\n");
+        } catch(IOException e) {
+            System.out.println("Error saving transaction: " + e.getMessage());
+        }
 
+    }
     // Get the current date and time in a readable format
     private String getCurrentDateTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
