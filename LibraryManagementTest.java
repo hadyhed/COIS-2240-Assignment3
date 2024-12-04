@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
 public class LibraryManagementTest {
 	private Library library;
@@ -92,6 +93,15 @@ public class LibraryManagementTest {
 	        }
 	    
     }
+	 public void testSingletonTransaction() {
+	        try {
+	            Constructor<Transaction> constructor = Transaction.class.getDeclaredConstructor();
+	            int modifiers = constructor.getModifiers();
+	            assertEquals("Constructor should be private", Modifier.PRIVATE, modifiers & Modifier.PRIVATE);
+	        } catch (Exception e) {
+	            fail("Exception thrown during Singleton validation: " + e.getMessage());
+	        }
+	    }
 
 
 }
